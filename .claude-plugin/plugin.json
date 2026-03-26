@@ -1,5 +1,8 @@
 {
-  "name": "et-research-cowork",
+  "name": "company-investigation",
   "version": "1.0.0",
-  "description": "Company investigation skill for Claude Cowork — pre-meeting research reports"
+  "description": "Pre-meeting company research — paste a company URL and get a scannable HTML report with source credibility badges across 10 research dimensions.",
+  "author": {
+    "name": "Emerging-Tech-Visma"
+  }
 }
