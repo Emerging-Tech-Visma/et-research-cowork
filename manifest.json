@@ -3,7 +3,7 @@
     {
       "skillId": "company-investigation",
       "name": "company-investigation",
-      "description": "Pre-meeting company research — paste a company URL and get a scannable HTML report with source credibility badges across 10 research dimensions. Use this skill whenever someone wants to research a company before a meeting, sales call, interview, or investment decision — or asks about a company's funding, competitors, leadership, tech stack, or business model. Trigger even when the user doesn't say \"investigate\" — if they're trying to learn about a specific company, this skill applies. Invoke with /investigate followed by a URL, or natural language like \"research Acme Corp\" or \"I have a meeting with Notion tomorrow\".",
+      "description": "Pre-meeting company research — paste a company URL and get a scannable HTML report with source credibility badges across 10 research dimensions. Use this skill whenever someone wants to research a company before a meeting, sales call, interview, or investment decision — or asks about a company's funding, competitors, leadership, tech stack, or business model. Trigger even when the user does not explicitly say investigate — if they're trying to learn about a specific company, this skill applies. Invoke with /investigate followed by a URL, or natural language like: research Acme Corp, or I have a meeting with Notion tomorrow.",
       "creatorType": "community",
       "updatedAt": "2026-03-26T00:00:00.000Z",
       "enabled": true
