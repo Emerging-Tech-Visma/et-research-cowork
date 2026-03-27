@@ -1,0 +1,42 @@
+name: Build .skill file
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build company-investigation.skill
+        run: |
+          cd plugins/company-investigation
+          zip -r ../../company-investigation.skill \
+            .claude-plugin/plugin.json \
+            skills/
+          cd ../..
+          ls -lh company-investigation.skill
+
+      - name: Update latest release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Find the latest release tag
+          TAG=$(gh release list --limit 1 --json tagName --jq '.[0].tagName')
+          if [ -z "$TAG" ]; then
+            echo "No release found, skipping"
+            exit 0
+          fi
+
+          # Extract release notes from CHANGELOG.md — everything from first ## heading onward
+          sed -n '/^## /,$p' CHANGELOG.md > /tmp/release-notes.md
+
+          # Update release body and upload asset
+          gh release edit "$TAG" --notes-file /tmp/release-notes.md
+          gh release upload "$TAG" company-investigation.skill --clobber
+          echo "Updated release $TAG with fresh notes and .skill asset"
