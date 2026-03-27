@@ -123,7 +123,7 @@ Conflicts between sources are flagged explicitly — never silently resolved.
 
 ## Install in Claude Cowork
 
-### From GitHub (recommended)
+### Option 1 — From GitHub (recommended)
 
 This keeps the skill in sync — when updates are published, just click Sync to get the latest version.
 
@@ -137,12 +137,20 @@ This keeps the skill in sync — when updates are published, just click Sync to 
 
 > **First time?** Claude needs access to GitHub. Click **Install the Claude GitHub App** when prompted, grant access to the org/repo, then come back and click Sync again.
 
+### Option 2 — Download the zip file
+
+No GitHub account needed. Download, unzip, and upload to Cowork.
+
+1. Download [`company-investigation.zip`](https://github.com/Emerging-Tech-Visma/et-research-cowork/releases/latest/download/company-investigation.zip)
+2. Unzip the file
+3. In Claude Cowork → **Customize** → **Personal plugins** → **+** → **Upload plugin**
+4. Select the unzipped folder — done
+
 ### Updating the skill
 
-Re-sync from GitHub to get the latest version:
+**Option 1:** Re-sync from GitHub — **Customize** → **Personal plugins** → **company-investigation** → **Sync**
 
-1. Claude Cowork → **Customize** → **Personal plugins**
-2. Click the **company-investigation** plugin → **Sync**
+**Option 2:** Download the latest zip and re-upload it.
 
 ---
 
