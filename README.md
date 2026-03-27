@@ -125,29 +125,36 @@ Conflicts between sources are flagged explicitly — never silently resolved.
 
 ### Option A — From GitHub (recommended for teams)
 
-1. Open Claude Cowork
-2. Go to **Settings → Skills → Add skill**
+1. Open **Claude Cowork** and click **Customize** in the left sidebar
+2. Under **Personal plugins**, click **+** → **Add marketplace**
 3. Paste the repo URL:
    ```
    https://github.com/Emerging-Tech-Visma/et-research-cowork
    ```
-4. Click **Install** — the skill is now available to your account
+4. Click **Sync** — the skill is now available to your account
 
-### Option B — From a `.skill` file
+> **First time?** Claude needs access to GitHub. Click **Install the Claude GitHub App** when prompted, grant access to the org/repo, then come back and click Sync again.
+
+### Option B — Upload a `.skill` file
 
 1. Download `company-investigation.skill` from the [latest release](https://github.com/Emerging-Tech-Visma/et-research-cowork/releases/latest)
-2. In Claude Cowork, go to **Settings → Skills → Import**
-3. Select the `.skill` file
+2. In Claude Cowork → **Customize** → **Personal plugins** → **+** → **Upload plugin**
+3. Select the `.skill` file — done
+
+### Updating the skill
+
+When a new version is released, re-sync from GitHub to get the latest:
+
+1. Claude Cowork → **Customize** → **Personal plugins**
+2. Click the **company-investigation** plugin → **Sync**
 
 ```
 Claude Cowork
      │
-     ├── Settings
-     │       └── Skills
-     │               ├── Add skill ──► paste GitHub URL
-     │               └── Import    ──► select .skill file
-     │
-     └── Chat  ──► /investigate https://company.com
+     └── Customize
+             └── Personal plugins
+                     ├── + → Add marketplace ──► paste GitHub URL → Sync
+                     └── + → Upload plugin   ──► select .skill file
 ```
 
 ---
