@@ -6,6 +6,20 @@ Format: `emoji vX.Y — one-line story`
 
 ---
 
+## 🔧 v1.2 — 2026-03-27
+
+Improve skill triggering and add zip download option.
+
+### Fixed
+- Skill description rewritten for more reliable triggering in Cowork — added assertive "MUST use" directive
+- Broadened trigger phrases to catch casual company research requests
+
+### Added
+- `.zip` download as install Option 2 in README with direct download link
+- CI builds `.zip`, `.plugin`, and `.skill` assets on every merge
+
+---
+
 ## 🔧 v1.1 — 2026-03-27
 
 Fix plugin installation from GitHub and add CI/CD for `.skill` packaging.
