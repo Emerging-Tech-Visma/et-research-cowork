@@ -3,10 +3,14 @@
   "owner": {
     "name": "Emerging-Tech-Visma"
   },
+  "metadata": {
+    "description": "Company investigation skill for Claude Cowork — pre-meeting research reports",
+    "version": "1.0.0"
+  },
   "plugins": [
     {
       "name": "company-investigation",
-      "source": "./skills/company-investigation",
+      "source": "./",
       "description": "Pre-meeting company research — paste a company URL and get a scannable HTML report with source credibility badges across 10 research dimensions."
     }
   ]
