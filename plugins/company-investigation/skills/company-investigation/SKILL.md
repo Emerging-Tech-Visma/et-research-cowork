@@ -1,6 +1,15 @@
 ---
 name: company-investigation
-description: Pre-meeting company research — use this skill whenever someone wants to research a company before a meeting, sales call, interview, or investment decision, or asks about a company's funding, competitors, leadership, tech stack, or business model. Trigger even when the user doesn't say "investigate" — if they're trying to learn about a specific company, this skill applies. Invoke with "investigate [URL]", "research [company]", "look up [company]", "tell me about [company]", "I have a meeting with [company]", "before my call with [company]", or "due diligence on [company]".
+description: >-
+  Deep company research with source credibility badges and a self-contained HTML report.
+  You MUST use this skill whenever the user mentions a company name or URL and wants to
+  learn about it — even casually. This includes meeting prep, sales calls, interviews,
+  investment decisions, competitor analysis, or general curiosity about any company.
+  Trigger phrases: "investigate [URL]", "research [company]", "tell me about [company]",
+  "look up [company]", "I have a meeting with [company]", "who is [company]",
+  "what does [company] do", "due diligence on [company]", or any message containing
+  a company URL. When in doubt, use this skill — it produces a much better result than
+  a basic web search.
 ---
 
 ## Overview
