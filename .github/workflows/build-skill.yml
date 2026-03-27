@@ -1,0 +1,58 @@
+name: Build .skill file
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build company-investigation.skill
+        run: |
+          cd plugins/company-investigation
+          zip -r ../../company-investigation.skill \
+            .claude-plugin/plugin.json \
+            skills/
+          cd ../..
+          ls -lh company-investigation.skill
+
+      - name: Read version from plugin.json
+        id: version
+        run: |
+          VERSION=$(jq -r '.version' plugins/company-investigation/.claude-plugin/plugin.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Plugin version: $VERSION"
+
+      - name: Extract release notes
+        run: sed -n '/^## /,$p' CHANGELOG.md > /tmp/release-notes.md
+
+      - name: Create or update release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          TITLE="$TAG — company-investigation"
+
+          # Check if release already exists
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            echo "Release $TAG exists — updating notes and asset"
+            gh release edit "$TAG" --title "$TITLE" --notes-file /tmp/release-notes.md
+            gh release upload "$TAG" company-investigation.skill --clobber
+          else
+            echo "Creating new release $TAG"
+            gh release create "$TAG" \
+              --title "$TITLE" \
+              --notes-file /tmp/release-notes.md \
+              --latest \
+              company-investigation.skill
+          fi
+
+          echo "Done: $TAG"
