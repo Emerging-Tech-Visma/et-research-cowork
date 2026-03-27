@@ -44,7 +44,7 @@ When the user invokes `/investigate <url>`:
    9. Red Flags / Risks
    10. AI Moat Analysis
 5. Ask the user: "Want to adjust focus areas, add context, or skip any sections before I run the full investigation? (Or just say 'go' to proceed with all sections.)"
-6. **Wait for user response before proceeding to Step 2.** Do not begin research until the user replies.
+6. **STOP. Your turn ends here.** Output the summary and the question above, then stop completely. Do not run any more tools. Do not begin Step 2. Do not dispatch agents. Wait for the user's next message before doing anything else.
 
 ### Error handling for Step 1
 
