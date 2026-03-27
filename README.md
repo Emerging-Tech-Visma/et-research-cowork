@@ -123,11 +123,9 @@ Conflicts between sources are flagged explicitly — never silently resolved.
 
 ## Install in Claude Cowork
 
-Three ways to install — pick whichever suits you best.
+### From GitHub (recommended)
 
-### Option 1 — From GitHub (best for teams)
-
-This is the recommended method. It keeps the skill in sync — when updates are published, just click Sync to get the latest version.
+This keeps the skill in sync — when updates are published, just click Sync to get the latest version.
 
 1. Open **Claude Cowork** and click **Customize** in the left sidebar
 2. Under **Personal plugins**, click **+** → **Add marketplace**
@@ -139,32 +137,12 @@ This is the recommended method. It keeps the skill in sync — when updates are 
 
 > **First time?** Claude needs access to GitHub. Click **Install the Claude GitHub App** when prompted, grant access to the org/repo, then come back and click Sync again.
 
-### Option 2 — Download the `.skill` file (quick one-click install)
-
-Grab the ready-made skill file from the releases page and drag it into Cowork. No GitHub account needed.
-
-1. Download [`company-investigation.skill`](https://github.com/Emerging-Tech-Visma/et-research-cowork/releases/latest/download/company-investigation.skill)
-2. In Claude Cowork → **Customize** → **Personal plugins** → **+** → **Upload plugin**
-3. Select the downloaded `.skill` file — done
-
-### Option 3 — Source code zip (inspect or modify before installing)
-
-For anyone who wants to review the code or make changes before installing.
-
-1. Go to the [latest release](https://github.com/Emerging-Tech-Visma/et-research-cowork/releases/latest)
-2. Under **Assets**, download **Source code (zip)**
-3. Unzip and review or modify the skill files
-4. In Claude Cowork → **Customize** → **Personal plugins** → **+** → **Upload plugin**
-5. Select the folder or repackage as a `.plugin` file
-
 ### Updating the skill
 
-If you installed via GitHub (Option 1), re-sync to get the latest version:
+Re-sync from GitHub to get the latest version:
 
 1. Claude Cowork → **Customize** → **Personal plugins**
 2. Click the **company-investigation** plugin → **Sync**
-
-If you installed via `.skill` file (Option 2), download the new release and re-upload it.
 
 ---
 
