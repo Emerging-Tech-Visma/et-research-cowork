@@ -13,14 +13,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build company-investigation.skill
+      - name: Build plugin package
         run: |
           cd plugins/company-investigation
-          zip -r ../../company-investigation.skill \
+          zip -r ../../company-investigation.plugin \
             .claude-plugin/plugin.json \
             skills/
           cd ../..
-          ls -lh company-investigation.skill
+          cp company-investigation.plugin company-investigation.skill
+          ls -lh company-investigation.plugin company-investigation.skill
 
       - name: Read version from plugin.json
         id: version
@@ -45,14 +46,14 @@ jobs:
           if gh release view "$TAG" > /dev/null 2>&1; then
             echo "Release $TAG exists — updating notes and asset"
             gh release edit "$TAG" --title "$TITLE" --notes-file /tmp/release-notes.md
-            gh release upload "$TAG" company-investigation.skill --clobber
+            gh release upload "$TAG" company-investigation.plugin company-investigation.skill --clobber
           else
             echo "Creating new release $TAG"
             gh release create "$TAG" \
               --title "$TITLE" \
               --notes-file /tmp/release-notes.md \
               --latest \
-              company-investigation.skill
+              company-investigation.plugin company-investigation.skill
           fi
 
           echo "Done: $TAG"

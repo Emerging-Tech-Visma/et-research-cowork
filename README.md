@@ -139,13 +139,13 @@ This is the recommended method. It keeps the skill in sync — when updates are 
 
 > **First time?** Claude needs access to GitHub. Click **Install the Claude GitHub App** when prompted, grant access to the org/repo, then come back and click Sync again.
 
-### Option 2 — Download the `.skill` file (quick one-click install)
+### Option 2 — Download the `.plugin` file (quick one-click install)
 
-Grab the ready-made skill file from the releases page and drag it into Cowork. No GitHub account needed.
+Grab the ready-made plugin file from the releases page and drag it into Cowork. No GitHub account needed.
 
-1. Download [`company-investigation.skill`](https://github.com/Emerging-Tech-Visma/et-research-cowork/releases/latest/download/company-investigation.skill)
+1. Download [`company-investigation.plugin`](https://github.com/Emerging-Tech-Visma/et-research-cowork/releases/latest/download/company-investigation.plugin)
 2. In Claude Cowork → **Customize** → **Personal plugins** → **+** → **Upload plugin**
-3. Select the downloaded `.skill` file — done
+3. Select the downloaded `.plugin` file — done
 
 ### Option 3 — Source code zip (inspect or modify before installing)
 
@@ -164,7 +164,7 @@ If you installed via GitHub (Option 1), re-sync to get the latest version:
 1. Claude Cowork → **Customize** → **Personal plugins**
 2. Click the **company-investigation** plugin → **Sync**
 
-If you installed via `.skill` file (Option 2), download the new release and re-upload it.
+If you installed via `.plugin` file (Option 2), download the new release and re-upload it.
 
 ---
 
