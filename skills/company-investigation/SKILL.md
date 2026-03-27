@@ -1,16 +1,6 @@
 ---
 name: company-investigation
-description: >
-  Pre-meeting company research — paste a company URL or name and get a scannable HTML report
-  with source credibility badges across 10 research dimensions.
-  Use when: investigate company, investigate URL, look up company, research company,
-  check out company, company background, who is this company, tell me about company,
-  I have a meeting with, before my call with, due diligence on, find out about company,
-  company profile, company overview, analyze company, dig into company.
-  Also handles: update skill, check for skill updates, update investigation skill, update this skill.
-  Trigger on any URL followed by an investigation intent, or any company name with research context.
-compatibility: Works in both Cowork and Claude Code environments.
-version: 1.0.0
+description: Pre-meeting company research — paste a company URL or name and get a scannable HTML report with source credibility badges across 10 research dimensions. Trigger with "investigate [company/URL]", "research [company]", "look up [company]", "tell me about [company]", "I have a meeting with [company]", "before my call with [company]", "due diligence on [company]", "check for skill updates", or "update this skill".
 ---
 
 ## Overview
