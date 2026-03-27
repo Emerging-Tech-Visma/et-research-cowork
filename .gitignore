@@ -1,0 +1,19 @@
+# Eval workspace — generated during skill development, not needed by installers
+company-investigation-workspace/
+
+# Planning artifacts
+plans/
+
+
+# Claude session history
+.claude/history/
+.claude/settings.local.json
+
+# Packaged skill file (generated artifact)
+*.skill
+
+# macOS
+.DS_Store
+
+# Evals (development only)
+evals/

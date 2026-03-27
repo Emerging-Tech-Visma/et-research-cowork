@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<!-- Claude Cowork — company-investigation skill — EXAMPLE REPORT -->
+<!-- Company: Notion (notion.so) | Generated: 2026-03-26 -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notion — Investigation Report</title>
+  <style>
+    /* ── Reset & base ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #ffffff;
+      --bg-section:#f9fafb;
+      --bg-card:   #f3f4f6;
+      --text:      #111111;
+      --text-muted:#6b7280;
+      --border:    #e5e7eb;
+      --accent:    #2563eb;
+      --accent-dim:#dbeafe;
+      --radius:    6px;
+      --gap:       1.5rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:        #111111;
+        --bg-section:#1f2937;
+        --bg-card:   #374151;
+        --text:      #f9fafb;
+        --text-muted:#9ca3af;
+        --border:    #374151;
+        --accent:    #3b82f6;
+        --accent-dim:#1e3a5f;
+      }
+      .badge-verified   { background: #064e3b; color: #6ee7b7; }
+      .badge-reported   { background: #451a03; color: #fcd34d; }
+      .badge-unconfirmed{ background: #374151; color: #9ca3af; }
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0 1rem 4rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    p { margin-bottom: 0.75rem; }
+
+    ul {
+      padding-left: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    li { margin-bottom: 0.35rem; }
+
+    /* ── Badges ─────────────────────────────────────────────────────── */
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 4px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .badge-verified    { background: #d1fae5; color: #065f46; }
+    .badge-reported    { background: #fef3c7; color: #92400e; }
+    .badge-unconfirmed { background: #f3f4f6; color: #6b7280; }
+
+    /* ── Header ─────────────────────────────────────────────────────── */
+    .report-header {
+      padding: 2rem 0 1.5rem;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: var(--gap);
+    }
+
+    .report-header .company-name {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1.15;
+    }
+
+    .report-header .company-tagline {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .report-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .report-meta .meta-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 3px 10px;
+      font-size: 0.75rem;
+    }
+
+    /* ── Executive Summary ──────────────────────────────────────────── */
+    .exec-summary {
+      background: var(--accent-dim);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.1rem 1.25rem;
+      margin-bottom: var(--gap);
+    }
+
+    .exec-summary h2 {
+      margin-bottom: 0.6rem;
+    }
+
+    .exec-summary ul li {
+      font-size: 0.95rem;
+    }
+
+    /* ── Key Stats Bar ──────────────────────────────────────────────── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: var(--gap);
+    }
+
+    .stat-card {
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.85rem 1rem;
+      text-align: center;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-card .stat-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* ── Collapsible Sections ───────────────────────────────────────── */
+    .sections-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: var(--gap);
+    }
+
+    details {
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    details[open] {
+      border-color: var(--accent);
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.9rem 1.1rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      gap: 0.5rem;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    summary::after {
+      content: "▸";
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      transition: transform 0.15s;
+    }
+
+    details[open] summary::after {
+      transform: rotate(90deg);
+    }
+
+    summary .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    summary .section-title {
+      flex: 1;
+    }
+
+    .section-body {
+      padding: 0 1.1rem 1.1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    .section-body ul {
+      margin-top: 0.75rem;
+    }
+
+    .finding-item {
+      margin-bottom: 0.6rem;
+      line-height: 1.55;
+    }
+
+    /* ── AI Moat Score ──────────────────────────────────────────────── */
+    .moat-block {
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.4rem;
+      margin-bottom: var(--gap);
+    }
+
+    .moat-block h2 {
+      margin-bottom: 0.85rem;
+    }
+
+    .moat-bar {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .moat-level {
+      flex: 1;
+      min-width: 70px;
+      text-align: center;
+      padding: 0.5rem 0.4rem;
+      border-radius: var(--radius);
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 2px solid transparent;
+      background: var(--bg-card);
+      color: var(--text-muted);
+    }
+
+    /* Active level — set via class="moat-level moat-active" on the matching cell */
+    .moat-active {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    .moat-reasoning {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Talking Points ─────────────────────────────────────────────── */
+    .talking-points {
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.4rem;
+      margin-bottom: var(--gap);
+    }
+
+    .talking-points h2 {
+      margin-bottom: 0.75rem;
+    }
+
+    .talking-points ol {
+      padding-left: 1.35rem;
+    }
+
+    .talking-points ol li {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── Source Overview ────────────────────────────────────────────── */
+    .source-overview {
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.4rem;
+      margin-bottom: var(--gap);
+    }
+
+    .source-overview h2 {
+      margin-bottom: 1rem;
+    }
+
+    .source-tier {
+      margin-bottom: 1rem;
+    }
+
+    .source-tier-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .source-tier ul {
+      padding-left: 1.2rem;
+    }
+
+    .source-tier ul li {
+      font-size: 0.85rem;
+      margin-bottom: 0.3rem;
+      color: var(--text);
+    }
+
+    /* ── Footer ─────────────────────────────────────────────────────── */
+    .report-footer {
+      text-align: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .report-footer strong {
+      color: var(--accent);
+    }
+
+    /* ── Responsive ─────────────────────────────────────────────────── */
+    @media (max-width: 540px) {
+      body { padding: 0 0.75rem 3rem; }
+      .report-header .company-name { font-size: 1.5rem; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .moat-bar { gap: 0.25rem; }
+      .moat-level { font-size: 0.72rem; padding: 0.4rem 0.3rem; }
+    }
+
+    /* ── Print ──────────────────────────────────────────────────────── */
+    @media print {
+      body {
+        max-width: 100%;
+        padding: 0;
+        color: #000;
+        background: #fff;
+        font-size: 11pt;
+      }
+
+      .report-header { padding: 0.5rem 0; }
+
+      /* Expand all sections for print */
+      details { border: 1px solid #ccc; margin-bottom: 6pt; }
+      details:not([open]) { display: block; }
+      .section-body { display: block !important; }
+      summary::after { display: none; }
+
+      /* Hide non-essential chrome */
+      .report-footer { display: none; }
+
+      .badge { border: 1px solid #ccc; }
+
+      a { color: #000; text-decoration: underline; }
+
+      .moat-active {
+        background: #000 !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .exec-summary {
+        background: #f0f0f0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════════════════════════════ -->
+  <header class="report-header">
+    <div class="company-name">Notion</div>
+    <div class="company-tagline">All-in-one workspace for notes, docs, databases, and project management — notion.so</div>
+    <div class="report-meta">
+      <span class="meta-pill">Investigation Report</span>
+      <span>Date: <strong>2026-03-26</strong></span>
+      <span>Generated by Claude Cowork</span>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       EXECUTIVE SUMMARY
+  ═══════════════════════════════════════════════════════════════════ -->
+  <section class="exec-summary">
+    <h2>Executive Summary — Walk into the meeting knowing this</h2>
+    <ul>
+      <li>Notion is an all-in-one workspace combining notes, docs, databases, and project management — positioned as a "second brain" for teams and knowledge workers. <span class="badge badge-verified">Verified</span></li>
+      <li>Last valued at $10B (2021 Series C) after raising $275M — growth has materially slowed in a more competitive, cost-conscious market since that peak valuation. <span class="badge badge-reported">Reported</span></li>
+      <li>Primary competition comes from Confluence (Atlassian), Coda, and increasingly from Microsoft Loop (bundled free with M365) and Google Docs — the bundling threat is the most acute enterprise risk. <span class="badge badge-reported">Reported</span></li>
+      <li>Strong product-led growth motion — free tier drives viral team adoption; dedicated enterprise push began ~2022 with SSO, audit logs, and admin controls, though the enterprise pivot is still early. <span class="badge badge-verified">Verified</span></li>
+      <li>Notion AI launched in early 2023 as a paid add-on (~$10/member/month) — represents a meaningful new revenue stream and upsell lever, but is built on third-party LLM APIs, not proprietary models. <span class="badge badge-reported">Reported</span></li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       KEY STATS BAR
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-label">Founded</div>
+      <div class="stat-value">2013</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">HQ</div>
+      <div class="stat-value">San Francisco, CA</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Employees</div>
+      <div class="stat-value">~800</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Funding</div>
+      <div class="stat-value">~$343M</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Revenue Signal</div>
+      <div class="stat-value">$100M+ ARR</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       10 COLLAPSIBLE SECTIONS
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div class="sections-grid">
+
+    <!-- Section 1 — Company Overview -->
+    <details>
+      <summary>
+        <span class="section-num">1</span>
+        <span class="section-title">Company Overview</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          <li class="finding-item">Founded in 2013 by Ivan Zhao and Simon Last in San Francisco. The company was bootstrapped for several years before accepting external capital, which is unusual for a software startup at its scale. <span class="badge badge-verified">Verified</span> <em>(Source: notion.so/about, Crunchbase)</em></li>
+          <li class="finding-item">Stated mission is "Make toolmaking accessible to everyone" — positioning the product as a flexible building block for teams rather than a fixed-function tool. <span class="badge badge-verified">Verified</span> <em>(Source: notion.so company website)</em></li>
+          <li class="finding-item">Originally launched as a note-taking and wiki product; evolved into an all-in-one workspace combining documents, databases, project tracking, and wikis under a single block-based editor interface. <span class="badge badge-verified">Verified</span> <em>(Source: notion.so product history, public blog posts)</em></li>
+          <li class="finding-item">Operates globally with a primarily remote-friendly culture; engineering and product teams are concentrated in San Francisco and New York. <span class="badge badge-reported">Reported</span> <em>(Source: LinkedIn job postings and company page, 2023–2024)</em></li>
+          <li class="finding-item">No major public controversies, litigation, or regulatory actions identified during this investigation period. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: web search sweep — no authoritative source confirming absence)</em></li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 2 — Product/Service Analysis -->
+    <details>
+      <summary>
+        <span class="section-num">2</span>
+        <span class="section-title">Product / Service Analysis</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          <li class="finding-item">Core product is a block-based editor supporting pages, nested documents, inline databases (table, kanban, calendar, gallery, list views), wikis, and embeds — all within a unified workspace. <span class="badge badge-verified">Verified</span> <em>(Source: notion.so product pages)</em></li>
+          <li class="finding-item">Pricing tiers: Free (personal use, limited block history), Plus ($10/member/month), Business ($18/member/month), Enterprise (custom). Notion AI is an optional add-on at $10/member/month across all paid tiers. <span class="badge badge-verified">Verified</span> <em>(Source: notion.so/pricing, accessed 2026-03-26)</em></li>
+          <li class="finding-item">Target customer has evolved from individual knowledge workers and students to SMBs and, since 2022, enterprise accounts requiring SSO, advanced permissions, audit logs, and SCIM provisioning. <span class="badge badge-verified">Verified</span> <em>(Source: notion.so/enterprise, product changelog)</em></li>
+          <li class="finding-item">G2 top positive reviews cite flexibility, the block-based editing model, and visual database design as key differentiators. Top criticisms cite slow performance on large workspaces and a steep learning curve for non-technical users. <span class="badge badge-reported">Reported</span> <em>(Source: G2.com product reviews, aggregate data)</em></li>
+          <li class="finding-item">Templates marketplace launched and expanded significantly in 2022–2023, creating a community distribution channel for new users — comparable to Figma's community model. <span class="badge badge-verified">Verified</span> <em>(Source: notion.so/templates, product announcement posts)</em></li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 3 — Team / Leadership -->
+    <details>
+      <summary>
+        <span class="section-num">3</span>
+        <span class="section-title">Team / Leadership</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          <li class="finding-item">Ivan Zhao is CEO and co-founder. Background in design and computer science; known for strong product vision and a relatively low public profile. Simon Last is CTO and co-founder, focused on core product infrastructure. <span class="badge badge-verified">Verified</span> <em>(Source: Crunchbase, LinkedIn profiles, Notion blog)</em></li>
+          <li class="finding-item">Akshay Kothari joined as COO in 2019, bringing operational scale experience from his time as Managing Director of LinkedIn India and as co-founder of Pulse (acquired by LinkedIn for ~$90M). <span class="badge badge-verified">Verified</span> <em>(Source: LinkedIn profile, TechCrunch announcement, 2019)</em></li>
+          <li class="finding-item">Board includes representatives from Index Ventures, Sequoia Capital, and Coatue Management — all leading institutional investors with broad SaaS portfolio experience. <span class="badge badge-reported">Reported</span> <em>(Source: Crunchbase, investor press releases)</em></li>
+          <li class="finding-item">No major C-suite departures flagged in the 18 months prior to this report. Leadership team appears stable relative to comparably-sized SaaS companies. <span class="badge badge-reported">Reported</span> <em>(Source: LinkedIn change tracking, no press reports of departures found)</em></li>
+          <li class="finding-item">Total headcount estimated at ~800. Engineering team estimated at 150–200 based on job posting volume and LinkedIn employee count signals. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: LinkedIn company page headcount signal — not officially disclosed)</em></li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 4 — Business Model -->
+    <details>
+      <summary>
+        <span class="section-num">4</span>
+        <span class="section-title">Business Model</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          <li class="finding-item">SaaS subscription model with per-seat pricing. The free tier enables individual use and drives viral team adoption — a classic product-led growth (PLG) motion where individuals bring Notion into their organizations. <span class="badge badge-verified">Verified</span> <em>(Source: notion.so/pricing)</em></li>
+          <li class="finding-item">Land-and-expand dynamic: free personal users → small team adoption → paid team workspace → enterprise procurement. Individual advocates are the primary acquisition channel rather than outbound sales. <span class="badge badge-verified">Verified</span> <em>(Source: notion.so/blog — company has discussed this publicly)</em></li>
+          <li class="finding-item">Notion AI ($10/member/month add-on) represents the first meaningful upsell layer on top of the core subscription. Attach rate and AI revenue contribution have not been disclosed publicly. <span class="badge badge-reported">Reported</span> <em>(Source: TechCrunch AI launch coverage, January 2023)</em></li>
+          <li class="finding-item">Revenue estimated at $100M+ ARR as of a 2022 signal (TechCrunch). No more recent public ARR figure has been disclosed by Notion. Some analyst estimates suggest growth to $150M+ by 2023, but this is not confirmed. <span class="badge badge-reported">Reported</span> <em>(Source: TechCrunch, 2022; analyst community estimates)</em></li>
+          <li class="finding-item">Enterprise push since 2022 added SSO, SCIM, audit logs, and dedicated customer success — indicating a deliberate move toward higher ACV contracts and away from pure self-serve growth. <span class="badge badge-verified">Verified</span> <em>(Source: notion.so/enterprise, product changelog entries)</em></li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 5 — Market & Competitors -->
+    <details>
+      <summary>
+        <span class="section-num">5</span>
+        <span class="section-title">Market &amp; Competitors</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          <li class="finding-item">Notion operates in the "Collaborative Docs / All-in-one Workspace" category. The broader productivity software market is estimated at $15B+ and growing, driven by hybrid work adoption and enterprise digitization. <span class="badge badge-reported">Reported</span> <em>(Source: Gartner, IDC market sizing reports)</em></li>
+          <li class="finding-item">Primary direct competitors: Confluence (Atlassian — enterprise incumbent with deep Jira integration), Coda (similar flex-doc model, smaller), Obsidian (personal knowledge management, not enterprise-focused). <span class="badge badge-verified">Verified</span> <em>(Source: G2 category pages, analyst comparisons)</em></li>
+          <li class="finding-item">Most acute competitive threat: Microsoft Loop, which is bundled free with Microsoft 365 enterprise licenses. For organizations already paying for M365, Loop removes Notion's value proposition without incremental cost. <span class="badge badge-reported">Reported</span> <em>(Source: Microsoft product announcements, analyst commentary, 2023)</em></li>
+          <li class="finding-item">Google Workspace (Docs, Sheets, Sites) remains the incumbent for many SMBs and education customers — not a direct feature-for-feature competitor but captures the same budget and attention. <span class="badge badge-verified">Verified</span> <em>(Source: G2 buyer comparisons)</em></li>
+          <li class="finding-item">Notion differentiates on design aesthetics, flexibility, and the unified block model versus competitors' more rigid, document-centric interfaces. This differentiation is meaningful for knowledge workers but harder to articulate in enterprise procurement cycles. <span class="badge badge-reported">Reported</span> <em>(Source: G2 reviews, analyst commentary)</em></li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 6 — Financials & Funding -->
+    <details>
+      <summary>
+        <span class="section-num">6</span>
+        <span class="section-title">Financials &amp; Funding</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          <li class="finding-item">Seed round: ~$2M (2018). Series A: $10M (2019, led by Index Ventures). Series B: $50M (2020, led by Sequoia Capital). Series C: $275M at a $10B valuation (2021, led by Coatue Management). Total raised: ~$343M. <span class="badge badge-verified">Verified</span> <em>(Source: Crunchbase, contemporaneous press releases)</em></li>
+          <li class="finding-item">No Series D or IPO signals identified as of early 2024. The $10B valuation from 2021 was set during peak SaaS multiples — current fair market value is likely materially lower given multiple compression across the sector. <span class="badge badge-reported">Reported</span> <em>(Source: Crunchbase, public SaaS valuation benchmarks)</em></li>
+          <li class="finding-item">Revenue publicly signaled at $100M+ ARR by TechCrunch in 2022 — the most recent confirmed public figure. Implies Notion was tracking at roughly 100x ARR to valuation at peak, which was in line with high-growth SaaS at the time but is not sustainable at current multiples. <span class="badge badge-reported">Reported</span> <em>(Source: TechCrunch, 2022)</em></li>
+          <li class="finding-item">Conflicting signals: Some sources suggest ARR may have grown to $150M+ by 2023, but no public statement from Notion confirms this. Treat any figure beyond the 2022 signal as unconfirmed. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: analyst community estimates — no primary source)</em></li>
+          <li class="finding-item">Profitability status not disclosed. At ~800 employees and SF/NY compensation levels, annual burn is likely in the $80–120M range — suggesting Notion is not yet profitable and is drawing down on Series C capital. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: estimated from headcount × market salary benchmarks, no company disclosure)</em></li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 7 — Tech Stack / Engineering -->
+    <details>
+      <summary>
+        <span class="section-num">7</span>
+        <span class="section-title">Tech Stack / Engineering</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          <li class="finding-item">Frontend built in React with TypeScript. Backend runs on Node.js. Primary data store is PostgreSQL with a custom block-storage layer designed to support the flexible, nested block model. <span class="badge badge-reported">Reported</span> <em>(Source: engineering job postings, Notion engineering blog posts)</em></li>
+          <li class="finding-item">Notion built a proprietary CRDT (Conflict-free Replicated Data Type) based real-time sync engine to handle collaborative editing across their block model — a non-trivial engineering investment that is not easily replicated. <span class="badge badge-reported">Reported</span> <em>(Source: Notion engineering blog, technical conference talks by Notion engineers)</em></li>
+          <li class="finding-item">Notion AI is powered by third-party LLM APIs (OpenAI and/or Anthropic) — no evidence of proprietary model training infrastructure. AI features include text generation, summarization, translation, and Q&amp;A over workspace content. <span class="badge badge-reported">Reported</span> <em>(Source: Notion AI product documentation, job postings)</em></li>
+          <li class="finding-item">No public GitHub organization found; Notion does not appear to open-source core product components. Engineering blog at notion.so/blog covers technical topics including sync performance and database architecture. <span class="badge badge-verified">Verified</span> <em>(Source: GitHub search, notion.so/blog)</em></li>
+          <li class="finding-item">25+ AI/ML-related job postings observed in late 2023, suggesting meaningful investment in building internal AI capabilities beyond the current LLM API wrapper approach. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: LinkedIn job count estimate — point-in-time snapshot, not verified for accuracy)</em></li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 8 — News & Sentiment -->
+    <details>
+      <summary>
+        <span class="section-num">8</span>
+        <span class="section-title">News &amp; Sentiment</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          <li class="finding-item">Notion AI launch (January 2023) received broadly positive press coverage. TechCrunch, The Verge, and Wired all covered the launch favorably, citing Notion's unique advantage of AI that operates within a user's existing knowledge base. <span class="badge badge-verified">Verified</span> <em>(Source: TechCrunch, The Verge, Wired — January 2023)</em></li>
+          <li class="finding-item">Templates marketplace growth and community ecosystem have generated organic positive coverage throughout 2022–2023, reinforcing the product's viral distribution model. <span class="badge badge-verified">Verified</span> <em>(Source: Product Hunt launches, Twitter/X community, notion.so/blog)</em></li>
+          <li class="finding-item">Layoffs of approximately 20 staff reported in October 2023 (The Information). Described as a restructuring rather than a distress signal — relatively small relative to ~800 headcount. <span class="badge badge-reported">Reported</span> <em>(Source: The Information, October 2023)</em></li>
+          <li class="finding-item">Glassdoor rating: 3.8/5. Positive feedback centers on product quality, mission, and team culture. Mixed feedback on executive communication and clarity of company direction in a more competitive market. <span class="badge badge-reported">Reported</span> <em>(Source: Glassdoor.com — aggregate rating, sample size not specified)</em></li>
+          <li class="finding-item">Persistent Reddit and Hacker News community complaints about performance degradation on large workspaces and databases. This is a recurring theme across multiple threads over 2022–2023 and represents a genuine product risk for enterprise expansion. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: Reddit r/Notion, Hacker News — community reports, not independently verified)</em></li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 9 — Red Flags / Risks -->
+    <details>
+      <summary>
+        <span class="section-num">9</span>
+        <span class="section-title">Red Flags / Risks</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          <li class="finding-item">Small layoff (~20 staff, October 2023) appears efficiency-focused rather than a distress signal given the scale of the company. However, it signals that growth has moderated enough to require cost discipline. <span class="badge badge-reported">Reported</span> <em>(Source: The Information, October 2023)</em></li>
+          <li class="finding-item">Microsoft Loop bundled free with M365 is the most significant structural competitive threat. Enterprise customers already paying for M365 have a "good enough" alternative at zero marginal cost — directly challenging Notion's enterprise expansion thesis. <span class="badge badge-reported">Reported</span> <em>(Source: Microsoft product announcements, analyst commentary)</em></li>
+          <li class="finding-item">Database and workspace performance at scale remains a persistent complaint from power users and enterprise evaluators. If this is not resolved, it becomes a meaningful blocker for large enterprise deployments. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: Reddit r/Notion, Hacker News community reports — not corroborated by independent testing)</em></li>
+          <li class="finding-item">No major litigation, regulatory actions, or data breach disclosures found during this investigation. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: web search sweep — absence of evidence is not evidence of absence)</em></li>
+          <li class="finding-item">$10B valuation from 2021 peak SaaS market creates a potential "down round" overhang if Notion seeks to raise additional capital. This could affect employee morale and option value, particularly for staff hired near the 2021 peak. <span class="badge badge-reported">Reported</span> <em>(Source: public SaaS valuation multiple compression data, analyst commentary)</em></li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 10 — AI Moat Analysis -->
+    <details>
+      <summary>
+        <span class="section-num">10</span>
+        <span class="section-title">AI Moat Analysis</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          <li class="finding-item">Notion AI is currently a feature layer built on top of third-party LLM APIs (OpenAI and/or Anthropic) — Notion is not training proprietary AI models. This means the underlying AI capability is not exclusive and can be replicated by any competitor with API access. <span class="badge badge-reported">Reported</span> <em>(Source: Notion AI product documentation, job postings)</em></li>
+          <li class="finding-item">The differentiated positioning is "AI that knows your workspace" — the ability for AI to query, summarize, and draft within the context of a user's existing Notion pages and databases. This is genuinely differentiated today and grows more valuable the more content a user stores in Notion. <span class="badge badge-reported">Reported</span> <em>(Source: Notion AI product pages, press coverage)</em></li>
+          <li class="finding-item">Defensibility improves significantly if Notion builds a RAG (retrieval-augmented generation) pipeline over user content with fine-tuning on workspace data — creating a personalized AI layer that would be hard to replicate without the underlying content graph. This appears to be the strategic direction based on job postings, but is not yet fully delivered. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: inferred from AI/ML job postings and product direction — no public roadmap confirmation)</em></li>
+          <li class="finding-item">Network effects are limited — each customer's workspace data improves their own AI experience but does not compound across unrelated customers (no cross-customer data sharing). This limits the flywheel compared to models that improve from aggregate usage. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: product architecture inference — no official disclosure on data practices)</em></li>
+          <li class="finding-item">Competitors (Confluence, Coda, Microsoft Loop) are all investing in similar "AI on your docs" features. The window for Notion to establish a durable AI moat is 12–24 months before the market converges on similar capabilities. <span class="badge badge-reported">Reported</span> <em>(Source: competitor product announcements, analyst commentary, 2023)</em></li>
+        </ul>
+      </div>
+    </details>
+
+  </div><!-- /.sections-grid -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       AI MOAT SCORE
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div class="moat-block">
+    <h2>AI Moat Score</h2>
+    <div class="moat-bar">
+      <div class="moat-level">Low</div>
+      <div class="moat-level moat-active">Medium</div>
+      <div class="moat-level">High</div>
+      <div class="moat-level">Strong</div>
+    </div>
+    <p class="moat-reasoning">
+      Notion AI is a feature layer built on third-party LLM APIs (OpenAI/Anthropic), not proprietary model infrastructure — making the core AI capability replicable by any well-resourced competitor. The genuine differentiation is contextual AI that operates within a user's existing workspace content, which grows stickier the more content a user stores in Notion. Defensibility improves meaningfully if Notion builds a durable RAG pipeline over user content with workspace-aware fine-tuning, but this is not yet fully delivered. The competitive window to establish a durable AI moat is approximately 12–24 months; Microsoft Loop (bundled with M365) and Confluence AI are converging on similar feature sets. Medium moat reflects real but time-limited differentiation.
+    </p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       TALKING POINTS
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div class="talking-points">
+    <h2>Talking Points — Conversation starters for the meeting</h2>
+    <ol>
+      <li>"Your Notion AI add-on is $10/member/month on top of subscription — how is attach rate tracking, and what does the AI revenue contribution look like as a percentage of total ARR?"</li>
+      <li>"Microsoft Loop is now bundled free with M365 for enterprise customers. How are you thinking about the bundling threat in enterprise deals, and what's your response when procurement asks why they should pay for Notion when Loop is included?"</li>
+      <li>"The last public ARR signal was $100M+ in 2022 — what's the growth rate looking like now, and where are you in terms of ARR today?"</li>
+      <li>"Your PLG motion is well-established, but you've been pushing enterprise since 2022 — what percentage of revenue is now coming from enterprise accounts, and how has the sales motion evolved?"</li>
+      <li>"The October 2023 layoff was small relative to your headcount — was that a targeted restructuring or the beginning of a broader efficiency drive? How is team morale holding up?"</li>
+    </ol>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SOURCE OVERVIEW
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div class="source-overview">
+    <h2>Source Overview</h2>
+
+    <div class="source-tier">
+      <div class="source-tier-label">
+        <span class="badge badge-verified">Verified</span>
+        Primary / independently confirmable sources
+      </div>
+      <ul>
+        <li>Company website — <a href="https://notion.so" target="_blank" rel="noopener">notion.so</a> (product, pricing, enterprise, about pages)</li>
+        <li>Crunchbase — funding rounds corroborated by contemporaneous investor press releases</li>
+        <li>Index Ventures, Sequoia Capital, Coatue Management — investor press releases for Series A, B, C</li>
+        <li>G2.com — product category listing and aggregate review data</li>
+        <li>GitHub — confirmed absence of a public Notion organization / open-source repos</li>
+        <li>notion.so/blog — engineering blog posts on sync, performance, and product architecture</li>
+        <li>notion.so/pricing — current pricing and plan structure</li>
+      </ul>
+    </div>
+
+    <div class="source-tier">
+      <div class="source-tier-label">
+        <span class="badge badge-reported">Reported</span>
+        Reported but not independently confirmed
+      </div>
+      <ul>
+        <li>TechCrunch — Notion AI launch coverage (January 2023); $100M+ ARR signal (2022)</li>
+        <li>The Information — layoff report (~20 staff, October 2023)</li>
+        <li>The Verge, Wired — Notion AI launch coverage (January 2023)</li>
+        <li>Glassdoor — employer rating (3.8/5); qualitative review themes</li>
+        <li>LinkedIn — Akshay Kothari COO hire announcement; leadership profile verification</li>
+        <li>Microsoft product announcements — Microsoft Loop feature set and M365 bundling (2023)</li>
+        <li>Analyst commentary — SaaS valuation multiple compression; competitor AI feature roadmaps</li>
+        <li>G2 buyer reviews — product strengths and weaknesses (aggregated, not individually verified)</li>
+      </ul>
+    </div>
+
+    <div class="source-tier">
+      <div class="source-tier-label">
+        <span class="badge badge-unconfirmed">Unconfirmed</span>
+        Inferred, estimated, or single-source claims
+      </div>
+      <ul>
+        <li>Reddit r/Notion and Hacker News — performance complaints on large workspaces and databases (community reports, not independently tested)</li>
+        <li>ARR growth estimate beyond 2022 ($150M+ by 2023) — analyst community estimate, no primary source or company disclosure</li>
+        <li>Burn rate / profitability estimate — derived from headcount × market salary benchmarks, no company financial disclosure</li>
+        <li>Engineering team size (150–200) — inferred from LinkedIn headcount signal and job posting volume</li>
+        <li>AI/ML job posting count (25+, late 2023) — LinkedIn job count estimate, point-in-time snapshot</li>
+        <li>RAG pipeline / workspace fine-tuning direction — inferred from job posting language and product positioning, not confirmed by public roadmap</li>
+        <li>Absence of litigation and regulatory actions — web search sweep only; not a legal review</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════════════════ -->
+  <footer class="report-footer">
+    <p>
+      Generated by <strong>Claude Cowork</strong> — company-investigation skill &nbsp;·&nbsp;
+      Report date: 2026-03-26 &nbsp;·&nbsp;
+      This report is AI-generated research and should be verified before use in decisions.
+    </p>
+  </footer>
+
+</body>
+</html>

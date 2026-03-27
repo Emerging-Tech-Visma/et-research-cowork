@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<!-- Claude Cowork — company-investigation skill template -->
+<!-- Placeholders use {{variable}} syntax throughout -->
+<!-- Example values shown in comments: company_name = "Acme Corp" -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{company_name}} — Investigation Report</title>
+  <style>
+    /* ── Reset & base ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #ffffff;
+      --bg-section:#f9fafb;
+      --bg-card:   #f3f4f6;
+      --text:      #111111;
+      --text-muted:#6b7280;
+      --border:    #e5e7eb;
+      --accent:    #2563eb;
+      --accent-dim:#dbeafe;
+      --radius:    6px;
+      --gap:       1.5rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:        #111111;
+        --bg-section:#1f2937;
+        --bg-card:   #374151;
+        --text:      #f9fafb;
+        --text-muted:#9ca3af;
+        --border:    #374151;
+        --accent:    #3b82f6;
+        --accent-dim:#1e3a5f;
+      }
+      .badge-verified   { background: #064e3b; color: #6ee7b7; }
+      .badge-reported   { background: #451a03; color: #fcd34d; }
+      .badge-unconfirmed{ background: #374151; color: #9ca3af; }
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0 1rem 4rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    p { margin-bottom: 0.75rem; }
+
+    ul {
+      padding-left: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    li { margin-bottom: 0.35rem; }
+
+    /* ── Badges ─────────────────────────────────────────────────────── */
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 4px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .badge-verified    { background: #d1fae5; color: #065f46; }
+    .badge-reported    { background: #fef3c7; color: #92400e; }
+    .badge-unconfirmed { background: #f3f4f6; color: #6b7280; }
+
+    /* ── Header ─────────────────────────────────────────────────────── */
+    .report-header {
+      padding: 2rem 0 1.5rem;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: var(--gap);
+    }
+
+    .report-header .company-name {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1.15;
+    }
+
+    .report-header .company-tagline {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .report-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .report-meta .meta-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 3px 10px;
+      font-size: 0.75rem;
+    }
+
+    /* ── Executive Summary ──────────────────────────────────────────── */
+    .exec-summary {
+      background: var(--accent-dim);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.1rem 1.25rem;
+      margin-bottom: var(--gap);
+    }
+
+    .exec-summary h2 {
+      margin-bottom: 0.6rem;
+    }
+
+    .exec-summary ul li {
+      font-size: 0.95rem;
+    }
+
+    /* ── Key Stats Bar ──────────────────────────────────────────────── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: var(--gap);
+    }
+
+    .stat-card {
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.85rem 1rem;
+      text-align: center;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-card .stat-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* ── Collapsible Sections ───────────────────────────────────────── */
+    .sections-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: var(--gap);
+    }
+
+    details {
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    details[open] {
+      border-color: var(--accent);
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.9rem 1.1rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      gap: 0.5rem;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    summary::after {
+      content: "▸";
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      transition: transform 0.15s;
+    }
+
+    details[open] summary::after {
+      transform: rotate(90deg);
+    }
+
+    summary .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    summary .section-title {
+      flex: 1;
+    }
+
+    .section-body {
+      padding: 0 1.1rem 1.1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    .section-body ul {
+      margin-top: 0.75rem;
+    }
+
+    .finding-item {
+      margin-bottom: 0.6rem;
+      line-height: 1.55;
+    }
+
+    /* ── AI Moat Score ──────────────────────────────────────────────── */
+    .moat-block {
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.4rem;
+      margin-bottom: var(--gap);
+    }
+
+    .moat-block h2 {
+      margin-bottom: 0.85rem;
+    }
+
+    .moat-bar {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .moat-level {
+      flex: 1;
+      min-width: 70px;
+      text-align: center;
+      padding: 0.5rem 0.4rem;
+      border-radius: var(--radius);
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 2px solid transparent;
+      background: var(--bg-card);
+      color: var(--text-muted);
+    }
+
+    /* Active level — set via class="moat-level moat-active" on the matching cell */
+    .moat-active {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    .moat-reasoning {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Talking Points ─────────────────────────────────────────────── */
+    .talking-points {
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.4rem;
+      margin-bottom: var(--gap);
+    }
+
+    .talking-points h2 {
+      margin-bottom: 0.75rem;
+    }
+
+    .talking-points ol {
+      padding-left: 1.35rem;
+    }
+
+    .talking-points ol li {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── Source Overview ────────────────────────────────────────────── */
+    .source-overview {
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.4rem;
+      margin-bottom: var(--gap);
+    }
+
+    .source-overview h2 {
+      margin-bottom: 1rem;
+    }
+
+    .source-tier {
+      margin-bottom: 1rem;
+    }
+
+    .source-tier-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .source-tier ul {
+      padding-left: 1.2rem;
+    }
+
+    .source-tier ul li {
+      font-size: 0.85rem;
+      margin-bottom: 0.3rem;
+      color: var(--text);
+    }
+
+    /* ── Footer ─────────────────────────────────────────────────────── */
+    .report-footer {
+      text-align: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .report-footer strong {
+      color: var(--accent);
+    }
+
+    /* ── Responsive ─────────────────────────────────────────────────── */
+    @media (max-width: 540px) {
+      body { padding: 0 0.75rem 3rem; }
+      .report-header .company-name { font-size: 1.5rem; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .moat-bar { gap: 0.25rem; }
+      .moat-level { font-size: 0.72rem; padding: 0.4rem 0.3rem; }
+    }
+
+    /* ── Print ──────────────────────────────────────────────────────── */
+    @media print {
+      body {
+        max-width: 100%;
+        padding: 0;
+        color: #000;
+        background: #fff;
+        font-size: 11pt;
+      }
+
+      .report-header { padding: 0.5rem 0; }
+
+      /* Expand all sections for print */
+      details { border: 1px solid #ccc; margin-bottom: 6pt; }
+      details:not([open]) { display: block; }
+      .section-body { display: block !important; }
+      summary::after { display: none; }
+
+      /* Hide non-essential chrome */
+      .report-footer { display: none; }
+
+      .badge { border: 1px solid #ccc; }
+
+      a { color: #000; text-decoration: underline; }
+
+      .moat-active {
+        background: #000 !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .exec-summary {
+        background: #f0f0f0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       HEADER
+       Example: company_name = "Acme Corp"
+                company_tagline = "AI-powered supply chain automation"
+                investigation_date = "2026-03-26"
+  ═══════════════════════════════════════════════════════════════════ -->
+  <header class="report-header">
+    <div class="company-name">{{company_name}}</div>
+    <div class="company-tagline">{{company_tagline}}</div>
+    <div class="report-meta">
+      <span class="meta-pill">Investigation Report</span>
+      <span>Date: <strong>{{investigation_date}}</strong></span>
+      <span>Generated by Claude Cowork</span>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       EXECUTIVE SUMMARY
+       Replace {{executive_summary_bullets}} with 3-5 <li> items, e.g.:
+         <li>Founded in 2019, raised $42M Series B in 2024 — still pre-revenue <span class="badge badge-reported">Reported</span></li>
+         <li>Core product is a no-code logistics API; 200+ enterprise pilots underway <span class="badge badge-verified">Verified</span></li>
+  ═══════════════════════════════════════════════════════════════════ -->
+  <section class="exec-summary">
+    <h2>Executive Summary — Walk into the meeting knowing this</h2>
+    <ul>
+      {{executive_summary_bullets}}
+      <!-- Placeholder example output:
+      <li>Company is a Series B-stage startup operating in the logistics automation space. <span class="badge badge-verified">Verified</span></li>
+      <li>Primary revenue driver is an API licensing model; annual contract values range $50K–$200K. <span class="badge badge-reported">Reported</span></li>
+      <li>Founding team has relevant domain expertise but limited enterprise sales track record. <span class="badge badge-unconfirmed">Unconfirmed</span></li>
+      <li>Key competitor (Flexport) recently launched a competing product at lower price point. <span class="badge badge-verified">Verified</span></li>
+      <li>AI moat is assessed as Medium — proprietary dataset exists but is replicable within 18 months. <span class="badge badge-reported">Reported</span></li>
+      -->
+    </ul>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       KEY STATS BAR
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-label">Founded</div>
+      <div class="stat-value">{{founding_year}}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">HQ</div>
+      <div class="stat-value">{{hq}}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Employees</div>
+      <div class="stat-value">{{employee_count}}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Funding</div>
+      <div class="stat-value">{{total_funding}}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Revenue Signal</div>
+      <div class="stat-value">{{revenue_signal}}</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       10 COLLAPSIBLE SECTIONS
+       Each {{section_N_findings}} should be replaced with <li class="finding-item"> entries.
+       Badge variants: badge-verified, badge-reported, badge-unconfirmed
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div class="sections-grid">
+
+    <!-- Section 1 — Company Overview -->
+    <details>
+      <summary>
+        <span class="section-num">1</span>
+        <span class="section-title">Company Overview</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          {{section_1_findings}}
+          <!-- Example:
+          <li class="finding-item">{{company_name}} was incorporated in {{founding_year}} in {{hq}} and operates as a Delaware C-Corp. <span class="badge badge-verified">Verified</span> <em>(Source: Delaware SOS public filings)</em></li>
+          <li class="finding-item">The company's stated mission is to eliminate manual work in freight coordination using AI agents. <span class="badge badge-verified">Verified</span> <em>(Source: company website)</em></li>
+          <li class="finding-item">There have been two pivots since founding — originally a marketplace, now a vertical SaaS. <span class="badge badge-reported">Reported</span> <em>(Source: LinkedIn post by CEO, 2023)</em></li>
+          <li class="finding-item">Brand reputation on Glassdoor is neutral (3.4/5); no major public controversies found. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: Glassdoor, sample size &lt;30)</em></li>
+          -->
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 2 — Product/Service Analysis -->
+    <details>
+      <summary>
+        <span class="section-num">2</span>
+        <span class="section-title">Product / Service Analysis</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          {{section_2_findings}}
+          <!-- Example:
+          <li class="finding-item">Core product is a REST API that integrates with 50+ carrier systems to automate shipment booking. <span class="badge badge-verified">Verified</span> <em>(Source: product documentation, docs.company.com)</em></li>
+          <li class="finding-item">A no-code dashboard was launched in Q1 2025 targeting ops managers without engineering resources. <span class="badge badge-verified">Verified</span> <em>(Source: product launch blog post)</em></li>
+          <li class="finding-item">Enterprise tier includes custom AI model fine-tuning on client data — differentiated but not yet documented publicly. <span class="badge badge-reported">Reported</span> <em>(Source: sales deck shared by contact)</em></li>
+          <li class="finding-item">Mobile app is listed on App Store but has fewer than 100 ratings — adoption appears limited. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: App Store listing)</em></li>
+          -->
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 3 — Team / Leadership -->
+    <details>
+      <summary>
+        <span class="section-num">3</span>
+        <span class="section-title">Team / Leadership</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          {{section_3_findings}}
+          <!-- Example:
+          <li class="finding-item">CEO previously led logistics operations at XYZ Corp ($500M revenue) — strong domain credibility. <span class="badge badge-verified">Verified</span> <em>(Source: LinkedIn profile)</em></li>
+          <li class="finding-item">CTO has an ML background (PhD, Stanford) and 3 patents in routing optimization. <span class="badge badge-verified">Verified</span> <em>(Source: Google Scholar, USPTO)</em></li>
+          <li class="finding-item">VP Sales joined 6 months ago from Salesforce; prior team had high churn per LinkedIn alumni data. <span class="badge badge-reported">Reported</span> <em>(Source: LinkedIn hiring history analysis)</em></li>
+          -->
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 4 — Business Model -->
+    <details>
+      <summary>
+        <span class="section-num">4</span>
+        <span class="section-title">Business Model</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          {{section_4_findings}}
+          <!-- Example:
+          <li class="finding-item">Revenue model is annual SaaS subscription with usage-based overages above 10K API calls/month. <span class="badge badge-verified">Verified</span> <em>(Source: public pricing page)</em></li>
+          <li class="finding-item">Gross margin estimated at 70–75% based on comparable public SaaS benchmarks. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: analyst model, no company disclosure)</em></li>
+          <li class="finding-item">Expansion motion relies on seat-based upsell; net revenue retention reportedly above 120%. <span class="badge badge-reported">Reported</span> <em>(Source: investor pitch referenced in TechCrunch article)</em></li>
+          -->
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 5 — Market & Competitors -->
+    <details>
+      <summary>
+        <span class="section-num">5</span>
+        <span class="section-title">Market &amp; Competitors</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          {{section_5_findings}}
+          <!-- Example:
+          <li class="finding-item">TAM for freight tech estimated at $54B globally (2025); company targets mid-market shippers. <span class="badge badge-reported">Reported</span> <em>(Source: Gartner report, 2024)</em></li>
+          <li class="finding-item">Direct competitors: Flexport, project44, FourKites — all better funded. <span class="badge badge-verified">Verified</span> <em>(Source: Crunchbase comparisons)</em></li>
+          <li class="finding-item">Differentiation claim is SMB-friendly pricing and faster onboarding (self-serve in &lt;1 day). <span class="badge badge-verified">Verified</span> <em>(Source: company website, G2 reviews)</em></li>
+          <li class="finding-item">No meaningful presence in European or APAC markets yet. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: job posting geography analysis)</em></li>
+          -->
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 6 — Financials & Funding -->
+    <details>
+      <summary>
+        <span class="section-num">6</span>
+        <span class="section-title">Financials &amp; Funding</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          {{section_6_findings}}
+          <!-- Example:
+          <li class="finding-item">Raised $42M total: $3M seed (2019), $12M Series A (2022), $27M Series B (2024). <span class="badge badge-verified">Verified</span> <em>(Source: Crunchbase, SEC Form D filings)</em></li>
+          <li class="finding-item">Lead Series B investor is Accel Partners; previous round led by First Round Capital. <span class="badge badge-verified">Verified</span> <em>(Source: press releases)</em></li>
+          <li class="finding-item">ARR reportedly ~$8M as of Q4 2024 — implies ~5x revenue multiple on last round. <span class="badge badge-reported">Reported</span> <em>(Source: anonymous founder comment, YC forum)</em></li>
+          <li class="finding-item">No public indication of profitability; burn rate likely $400–600K/month based on headcount. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: estimated from LinkedIn headcount × market salaries)</em></li>
+          -->
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 7 — Tech Stack / Engineering -->
+    <details>
+      <summary>
+        <span class="section-num">7</span>
+        <span class="section-title">Tech Stack / Engineering</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          {{section_7_findings}}
+          <!-- Example:
+          <li class="finding-item">Primary backend is Python/FastAPI on AWS; frontend is React + TypeScript. <span class="badge badge-verified">Verified</span> <em>(Source: open GitHub repos, job postings)</em></li>
+          <li class="finding-item">ML pipeline uses fine-tuned LLMs (likely GPT-4 family) for document parsing — confirmed by job ad language. <span class="badge badge-reported">Reported</span> <em>(Source: senior ML engineer job post, 2025-01)</em></li>
+          <li class="finding-item">No evidence of proprietary model training infrastructure; likely heavily cloud-API dependent. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: inferred from team size and open-source footprint)</em></li>
+          -->
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 8 — News & Sentiment -->
+    <details>
+      <summary>
+        <span class="section-num">8</span>
+        <span class="section-title">News &amp; Sentiment</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          {{section_8_findings}}
+          <!-- Example:
+          <li class="finding-item">Featured in TechCrunch Series B announcement (2024-09); generally positive coverage. <span class="badge badge-verified">Verified</span> <em>(Source: TechCrunch, techcrunch.com/2024/09/…)</em></li>
+          <li class="finding-item">CEO gave keynote at FreightTech Summit 2025 — signals growing industry recognition. <span class="badge badge-verified">Verified</span> <em>(Source: FreightTech Summit website)</em></li>
+          <li class="finding-item">One critical Reddit thread (r/supplychain) citing slow support response times. <span class="badge badge-reported">Reported</span> <em>(Source: Reddit, 2024-11)</em></li>
+          <li class="finding-item">G2 rating: 4.2/5 (87 reviews); top complaints are onboarding docs and API rate limits. <span class="badge badge-verified">Verified</span> <em>(Source: G2.com, accessed {{investigation_date}})</em></li>
+          -->
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 9 — Red Flags / Risks -->
+    <details>
+      <summary>
+        <span class="section-num">9</span>
+        <span class="section-title">Red Flags / Risks</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          {{section_9_findings}}
+          <!-- Example:
+          <li class="finding-item">Two C-suite departures in 12 months (CFO, CPO) — could signal internal tension. <span class="badge badge-reported">Reported</span> <em>(Source: LinkedIn updates, not announced publicly)</em></li>
+          <li class="finding-item">Data processing agreement mentions arbitration clause that limits enterprise customers' recourse. <span class="badge badge-verified">Verified</span> <em>(Source: public Terms of Service, clause 14.2)</em></li>
+          <li class="finding-item">Heavy dependency on a single carrier API (FedEx) which could be withdrawn with 90-day notice. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: inferred from API documentation structure)</em></li>
+          <li class="finding-item">Regulatory risk: upcoming EU AI Act may require auditable decision logs not yet in product roadmap. <span class="badge badge-reported">Reported</span> <em>(Source: EU AI Act compliance checklist, horizon scan)</em></li>
+          -->
+        </ul>
+      </div>
+    </details>
+
+    <!-- Section 10 — AI Moat Analysis -->
+    <details>
+      <summary>
+        <span class="section-num">10</span>
+        <span class="section-title">AI Moat Analysis</span>
+      </summary>
+      <div class="section-body">
+        <ul>
+          {{section_10_findings}}
+          <!-- Example:
+          <li class="finding-item">Company claims a proprietary training dataset of 50M+ freight transactions — meaningful if exclusive. <span class="badge badge-reported">Reported</span> <em>(Source: CEO interview, LogTech Podcast, 2024-08)</em></li>
+          <li class="finding-item">No evidence of exclusive data partnerships; most data likely aggregatable by a well-funded competitor. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: market analysis)</em></li>
+          <li class="finding-item">Network effect is weak — each customer's data improves the model but value does not compound between unrelated customers. <span class="badge badge-unconfirmed">Unconfirmed</span> <em>(Source: product architecture inference)</em></li>
+          -->
+        </ul>
+      </div>
+    </details>
+
+  </div><!-- /.sections-grid -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       AI MOAT SCORE
+       Set class="moat-level moat-active" on the level matching {{ai_moat_score}}
+       (Low | Medium | High | Strong)
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div class="moat-block">
+    <h2>AI Moat Score</h2>
+    <div class="moat-bar">
+      <!-- Claude: add class "moat-active" to the cell matching {{ai_moat_score}} -->
+      <div class="moat-level">Low</div>
+      <div class="moat-level moat-active">{{ai_moat_score}}</div><!-- example: Medium -->
+      <div class="moat-level">High</div>
+      <div class="moat-level">Strong</div>
+    </div>
+    <p class="moat-reasoning">{{ai_moat_reasoning}}</p>
+    <!-- Example reasoning:
+    The company has an emerging proprietary dataset but lacks exclusive sourcing agreements.
+    Current AI capabilities are differentiated today but replicable within 12–18 months by a better-funded competitor.
+    Strengthening the moat requires locking in exclusive carrier data partnerships before the next funding round.
+    -->
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       TALKING POINTS
+       Replace {{talking_points}} with 4-6 <li> items phrased as open questions
+       or observations to raise in the meeting.
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div class="talking-points">
+    <h2>Talking Points — Conversation starters for the meeting</h2>
+    <ol>
+      {{talking_points}}
+      <!-- Example:
+      <li>"Walk me through what happens to a customer's data after onboarding — who else benefits from it and how?"</li>
+      <li>"You had two C-suite changes in the past year. How has the leadership team stabilized, and what does the org look like now?"</li>
+      <li>"Your pricing is significantly below Flexport. Is that intentional long-term positioning, or a land-and-expand strategy before raising prices?"</li>
+      <li>"The EU AI Act compliance gap around auditable decision logs — is that on the roadmap, and what's the timeline?"</li>
+      <li>"You're claiming 120% NRR. Can you share the cohort data behind that number, and how it's trended quarter-over-quarter?"</li>
+      <li>"Where does the Series B capital get deployed? Product, sales, or geographic expansion?"</li>
+      -->
+    </ol>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SOURCE OVERVIEW
+       Replace each {{*_sources}} with <li> items linking or citing each source.
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div class="source-overview">
+    <h2>Source Overview</h2>
+
+    <div class="source-tier">
+      <div class="source-tier-label">
+        <span class="badge badge-verified">Verified</span>
+        Primary / independently confirmable sources
+      </div>
+      <ul>
+        {{verified_sources}}
+        <!-- Example:
+        <li>Company website — <a href="#">{{company_name}}.com</a></li>
+        <li>Delaware SOS filing — Entity #XXXXXXX</li>
+        <li>SEC Form D (Series B) — filed 2024-09-12</li>
+        <li>Crunchbase profile — crunchbase.com/organization/…</li>
+        <li>G2 reviews — g2.com/products/…</li>
+        <li>FreightTech Summit 2025 speaker page</li>
+        <li>USPTO patent filings — CTO name</li>
+        -->
+      </ul>
+    </div>
+
+    <div class="source-tier">
+      <div class="source-tier-label">
+        <span class="badge badge-reported">Reported</span>
+        Reported but not independently confirmed
+      </div>
+      <ul>
+        {{reported_sources}}
+        <!-- Example:
+        <li>TechCrunch Series B announcement, 2024-09</li>
+        <li>LogTech Podcast interview with CEO, 2024-08</li>
+        <li>Investor pitch deck (shared by third party — not verified for currency)</li>
+        <li>Anonymous YC forum comment re: ARR figure</li>
+        <li>LinkedIn hiring history analysis (third-party tool)</li>
+        -->
+      </ul>
+    </div>
+
+    <div class="source-tier">
+      <div class="source-tier-label">
+        <span class="badge badge-unconfirmed">Unconfirmed</span>
+        Inferred, estimated, or single-source claims
+      </div>
+      <ul>
+        {{unconfirmed_sources}}
+        <!-- Example:
+        <li>Burn rate estimate based on LinkedIn headcount × market salary benchmarks</li>
+        <li>Gross margin estimate from public SaaS comparables (no company disclosure)</li>
+        <li>API dependency inference from documentation structure analysis</li>
+        <li>Mobile app adoption assessment (App Store rating count only)</li>
+        -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════════════════ -->
+  <footer class="report-footer">
+    <p>
+      Generated by <strong>Claude Cowork</strong> — company-investigation skill &nbsp;·&nbsp;
+      Report date: {{investigation_date}} &nbsp;·&nbsp;
+      This report is AI-generated research and should be verified before use in decisions.
+    </p>
+  </footer>
+
+</body>
+</html>
