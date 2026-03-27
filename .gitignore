@@ -9,8 +9,12 @@ plans/
 .claude/history/
 .claude/settings.local.json
 
-# Packaged skill file (generated artifact)
+# Packaged skill/plugin files (generated artifacts)
 *.skill
+*.plugin
+
+# Investigation reports (generated output)
+*-investigation-*.html
 
 # macOS
 .DS_Store
