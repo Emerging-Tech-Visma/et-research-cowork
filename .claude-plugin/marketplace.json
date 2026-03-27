@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "company-investigation",
-      "source": "./",
+      "source": "./skills/company-investigation",
       "description": "Pre-meeting company research — paste a company URL and get a scannable HTML report with source credibility badges across 10 research dimensions."
     }
   ]
