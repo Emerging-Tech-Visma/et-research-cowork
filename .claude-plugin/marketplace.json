@@ -1,6 +1,8 @@
 {
-  "name": "company-investigation",
-  "description": "Pre-meeting company research — paste a company URL and get a scannable HTML report with source credibility badges across 10 research dimensions.",
+  "name": "et-research-cowork",
+  "owner": {
+    "name": "Emerging-Tech-Visma"
+  },
   "plugins": [
     {
       "name": "company-investigation",
