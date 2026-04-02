@@ -6,6 +6,17 @@ Format: `emoji vX.Y — one-line story`
 
 ---
 
+## 🧹 v1.4 — 2026-04-02
+
+Clean repo, clear learning path — removed dev artifacts, moved BUILDING.md into docs/, ready for others to learn from.
+
+### Changed
+- Moved `BUILDING.md` into `docs/` alongside the plugin documentation
+- Removed `docs/design-spec.md` (superseded by BUILDING.md)
+- Removed `.github/workflows/build-skill.yml` (old `.skill` build, replaced by marketplace install)
+
+---
+
 ## 📦 v1.3 — 2026-04-02
 
 Install once, works everywhere — verified install steps for Claude Cowork desktop and Claude Code CLI, plus org-wide auto-discovery via settings.
