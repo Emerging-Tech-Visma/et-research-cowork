@@ -121,41 +121,36 @@ Conflicts between sources are flagged explicitly — never silently resolved.
 
 ---
 
-## Install in Claude Code
+## Install
 
-Two commands — done:
+### Claude Cowork (desktop)
+
+1. Open the **Claude** desktop app and click the **Cowork** tab
+2. Click **Customize** in the left sidebar
+3. Under plugins, click **+** → **Add marketplace**
+4. Enter the repository:
+   ```
+   Emerging-Tech-Visma/et-research-cowork
+   ```
+5. Click **Sync**
+6. Find **company-investigation** in the list and click **Install**
+
+### Claude Code (CLI)
+
+Add the marketplace and install the plugin:
 
 ```shell
 /plugin marketplace add Emerging-Tech-Visma/et-research-cowork
 /plugin install company-investigation@et-research-cowork
+/reload-plugins
 ```
 
-### Org-wide auto-discovery (optional)
+Or use the interactive UI — run `/plugin`, go to the **Discover** tab, find **company-investigation**, and choose your installation scope.
 
-Add this to your project's `.claude/settings.json` and the marketplace will be auto-suggested to everyone who opens the repo:
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "et-research-cowork": {
-      "source": {
-        "source": "github",
-        "repo": "Emerging-Tech-Visma/et-research-cowork"
-      }
-    }
-  }
-}
-```
-
-Members then run one command to install:
+### Update
 
 ```shell
-/plugin install company-investigation@et-research-cowork
-```
-
-### Updating
-
-```shell
+/plugin marketplace update et-research-cowork
 /plugin update company-investigation@et-research-cowork
 ```
 
