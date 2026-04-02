@@ -121,36 +121,43 @@ Conflicts between sources are flagged explicitly — never silently resolved.
 
 ---
 
-## Install in Claude Cowork
+## Install in Claude Code
 
-### Option 1 — From GitHub (recommended)
+Two commands — done:
 
-This keeps the skill in sync — when updates are published, just click Sync to get the latest version.
+```shell
+/plugin marketplace add Emerging-Tech-Visma/et-research-cowork
+/plugin install company-investigation@et-research-cowork
+```
 
-1. Open **Claude Cowork** and click **Customize** in the left sidebar
-2. Under **Personal plugins**, click **+** → **Add marketplace**
-3. Paste the repo URL:
-   ```
-   https://github.com/Emerging-Tech-Visma/et-research-cowork
-   ```
-4. Click **Sync** — the skill is now available to your account
+### Org-wide auto-discovery (optional)
 
-> **First time?** Claude needs access to GitHub. Click **Install the Claude GitHub App** when prompted, grant access to the org/repo, then come back and click Sync again.
+Add this to your project's `.claude/settings.json` and the marketplace will be auto-suggested to everyone who opens the repo:
 
-### Option 2 — Download the zip file
+```json
+{
+  "extraKnownMarketplaces": {
+    "et-research-cowork": {
+      "source": {
+        "source": "github",
+        "repo": "Emerging-Tech-Visma/et-research-cowork"
+      }
+    }
+  }
+}
+```
 
-No GitHub account needed. Download, unzip, and upload to Cowork.
+Members then run one command to install:
 
-1. Download [`company-investigation.zip`](https://github.com/Emerging-Tech-Visma/et-research-cowork/releases/latest/download/company-investigation.zip)
-2. Unzip the file
-3. In Claude Cowork → **Customize** → **Personal plugins** → **+** → **Upload plugin**
-4. Select the unzipped folder — done
+```shell
+/plugin install company-investigation@et-research-cowork
+```
 
-### Updating the skill
+### Updating
 
-**Option 1:** Re-sync from GitHub — **Customize** → **Personal plugins** → **company-investigation** → **Sync**
-
-**Option 2:** Download the latest zip and re-upload it.
+```shell
+/plugin update company-investigation@et-research-cowork
+```
 
 ---
 

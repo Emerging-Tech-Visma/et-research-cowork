@@ -1,0 +1,10 @@
+{
+  "extraKnownMarketplaces": {
+    "et-research-cowork": {
+      "source": {
+        "source": "github",
+        "repo": "Emerging-Tech-Visma/et-research-cowork"
+      }
+    }
+  }
+}
