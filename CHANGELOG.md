@@ -6,6 +6,12 @@ Format: `emoji vX.Y — one-line story`
 
 ---
 
+## ✅ v1.5 — 2026-04-02
+
+Verified update flow — plugin syncs correctly via "Check for updates" in Cowork.
+
+---
+
 ## 🧹 v1.4 — 2026-04-02
 
 Clean repo, clear learning path — removed dev artifacts, moved BUILDING.md into docs/, ready for others to learn from.
