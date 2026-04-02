@@ -121,36 +121,38 @@ Conflicts between sources are flagged explicitly — never silently resolved.
 
 ---
 
-## Install in Claude Cowork
+## Install
 
-### Option 1 — From GitHub (recommended)
+### Claude Cowork (desktop)
 
-This keeps the skill in sync — when updates are published, just click Sync to get the latest version.
-
-1. Open **Claude Cowork** and click **Customize** in the left sidebar
-2. Under **Personal plugins**, click **+** → **Add marketplace**
-3. Paste the repo URL:
+1. Open the **Claude** desktop app and click the **Cowork** tab
+2. Click **Customize** in the left sidebar
+3. Under plugins, click **+** → **Add marketplace**
+4. Enter the repository:
    ```
-   https://github.com/Emerging-Tech-Visma/et-research-cowork
+   Emerging-Tech-Visma/et-research-cowork
    ```
-4. Click **Sync** — the skill is now available to your account
+5. Click **Sync**
+6. Find **company-investigation** in the list and click **Install**
 
-> **First time?** Claude needs access to GitHub. Click **Install the Claude GitHub App** when prompted, grant access to the org/repo, then come back and click Sync again.
+### Claude Code (CLI)
 
-### Option 2 — Download the zip file
+Add the marketplace and install the plugin:
 
-No GitHub account needed. Download, unzip, and upload to Cowork.
+```shell
+/plugin marketplace add Emerging-Tech-Visma/et-research-cowork
+/plugin install company-investigation@et-research-cowork
+/reload-plugins
+```
 
-1. Download [`company-investigation.zip`](https://github.com/Emerging-Tech-Visma/et-research-cowork/releases/latest/download/company-investigation.zip)
-2. Unzip the file
-3. In Claude Cowork → **Customize** → **Personal plugins** → **+** → **Upload plugin**
-4. Select the unzipped folder — done
+Or use the interactive UI — run `/plugin`, go to the **Discover** tab, find **company-investigation**, and choose your installation scope.
 
-### Updating the skill
+### Update
 
-**Option 1:** Re-sync from GitHub — **Customize** → **Personal plugins** → **company-investigation** → **Sync**
-
-**Option 2:** Download the latest zip and re-upload it.
+```shell
+/plugin marketplace update et-research-cowork
+/plugin update company-investigation@et-research-cowork
+```
 
 ---
 
