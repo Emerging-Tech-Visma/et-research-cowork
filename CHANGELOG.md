@@ -6,6 +6,15 @@ Format: `emoji vX.Y — one-line story`
 
 ---
 
+## 🐛 v1.6 — 2026-04-02
+
+Fix collapsible sections in generated reports — prevent duplicate click handlers.
+
+### Fixed
+- SKILL.md now explicitly instructs Claude not to add JavaScript click handlers when generating HTML reports — the template uses native `<details>`/`<summary>` elements which need no JS; adding JS alongside them caused sections to open then immediately close
+
+---
+
 ## ✅ v1.5 — 2026-04-02
 
 Verified update flow — plugin syncs correctly via "Check for updates" in Cowork.

@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "Company investigation skill for Claude Cowork — pre-meeting research reports",
-    "version": "1.5.0"
+    "version": "1.6.0"
   },
   "plugins": [
     {
       "name": "company-investigation",
       "source": "./plugins/company-investigation",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "description": "Pre-meeting company research — paste a company URL and get a scannable HTML report with source credibility badges across 10 research dimensions."
     }
   ]

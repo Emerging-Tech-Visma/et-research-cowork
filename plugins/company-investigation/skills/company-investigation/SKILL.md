@@ -199,6 +199,7 @@ Generate a **complete, self-contained HTML report** based on that template. The 
 5. **Include a Talking Points section** with 4–6 conversation starters the user can bring into the meeting, grounded in the research findings.
 6. **Include a Source Overview** section at the bottom, listing all cited sources grouped by credibility tier (Tier 1: Primary, Tier 2: Secondary, Tier 3: Inferred) as defined in `references/source-credibility.md`.
 7. **Be completely self-contained** — all CSS must be inlined or in a `<style>` block within the file. No external stylesheets, fonts, or scripts. No CDN links. The file must render correctly when opened from a local filesystem with no internet access.
+   - **CRITICAL — no JavaScript for collapsible sections.** The template uses native HTML `<details>`/`<summary>` elements which collapse and expand without any JavaScript. Do NOT add `onclick` attributes, `addEventListener` calls, or any `<script>` block that toggles sections. Adding JS alongside `<details>`/`<summary>` creates duplicate handlers that break the toggle (section opens then immediately closes). Leave collapsible sections as plain `<details>`/`<summary>` HTML only.
 8. **Mark any sections with missing agent data** clearly: use a banner or callout reading "Research unavailable — agent did not return results for this section."
 9. **Mark any conflicts** using the `CONFLICT:` label, showing both claims.
 10. **Include the report generation date** (today's date: use the date at time of execution) and the source URL in the report header.
