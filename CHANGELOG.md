@@ -6,6 +6,20 @@ Format: `emoji vX.Y — one-line story`
 
 ---
 
+## 📦 v1.3 — 2026-04-02
+
+Install once, works everywhere — verified install steps for Claude Cowork desktop and Claude Code CLI, plus org-wide auto-discovery via settings.
+
+### Fixed
+- Plugin structure aligned with official Cowork plugin format — resolves marketplace sync failures
+- SKILL.md now loads correctly when skill is triggered
+
+### Added
+- Verified install instructions for Claude Cowork (desktop) and Claude Code CLI
+- `.claude/settings.json` with `extraKnownMarketplaces` for org-wide auto-discovery
+
+---
+
 ## 🔧 v1.2 — 2026-03-27
 
 Improve skill triggering and add zip download option.
