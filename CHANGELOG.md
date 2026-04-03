@@ -6,6 +6,19 @@ Format: `emoji vX.Y — one-line story`
 
 ---
 
+## 🛠️ v1.7 — 2026-04-03
+
+Refactor SKILL.md with progressive disclosure + Anthropic-standard frontmatter.
+
+### Changed
+- SKILL.md frontmatter: replaced multiline `>-` YAML with single-line description and added `argument-hint` field — matches Anthropic's official plugin format
+- SKILL.md body: agent prompt blocks and HTML generation rules moved to dedicated reference files — SKILL.md now stays under 3,000 words
+- New `references/agent-prompts.md` — full instructions for all 4 parallel research agents (previously inline in SKILL.md Step 2)
+- New `references/html-template-guide.md` — HTML generation rules, placeholder mapping, no-JS constraint, conflict/missing-section rendering (previously inline in SKILL.md Step 3.4)
+- New `docs/CREATING_A_PLUGIN.md` — learning guide for building Cowork plugins following Anthropic conventions, including known distribution gotchas
+
+---
+
 ## 🐛 v1.6 — 2026-04-02
 
 Fix collapsible sections in generated reports — prevent duplicate click handlers.
