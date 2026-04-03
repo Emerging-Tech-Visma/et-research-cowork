@@ -48,10 +48,38 @@ Replace all `{{placeholder}}` variables with actual content:
 
 The template uses native HTML `<details>`/`<summary>` elements. These collapse and expand without any JavaScript. Adding `onclick` attributes, `addEventListener` calls, or any `<script>` block that toggles sections creates duplicate handlers that break the toggle — the section opens then immediately closes.
 
-- Leave all collapsible sections as plain `<details>`/`<summary>` HTML only
+**Correct structure for each research section:**
+
+```html
+<details>
+  <summary>
+    <span class="section-num">1</span>
+    <span class="section-title">Section Title</span>
+  </summary>
+  <div class="section-body">
+    <!-- section content here -->
+  </div>
+</details>
+```
+
+**Do NOT use this pattern** (broken — creates duplicate handlers):
+
+```html
+<!-- WRONG: div-based toggle with onclick or addEventListener -->
+<div class="section-header" onclick="this.parentElement.classList.toggle('open')">...</div>
+<script>
+  document.querySelectorAll('.section-header').forEach(h => {
+    h.addEventListener('click', () => h.parentElement.classList.toggle('open'));
+  });
+</script>
+```
+
+Rules:
+- Use `<details>`/`<summary>` for every collapsible section — never `<div class="section-header">`
 - No `onclick` attributes on any element
-- No `addEventListener` in any `<script>` block
+- No `addEventListener` in any `<script>` block targeting sections
 - No jQuery or other library toggle calls
+- The only permitted `<script>` content is print-mode helpers (e.g. expanding all details for printing)
 
 ---
 
