@@ -6,6 +6,15 @@ Format: `emoji vX.Y — one-line story`
 
 ---
 
+## 🐛 v1.8 — 2026-04-03
+
+Fix collapsible section generation — show correct `<details>`/`<summary>` pattern and explicitly forbid div-based JS toggle.
+
+### Fixed
+- `references/html-template-guide.md`: Added explicit correct and wrong code examples for collapsible sections — Claude was generating `<div class="section-header">` with `onclick` + `addEventListener` instead of native `<details>`/`<summary>`, causing double-toggle where sections appeared stuck
+
+---
+
 ## 🛠️ v1.7 — 2026-04-03
 
 Refactor SKILL.md with progressive disclosure + Anthropic-standard frontmatter.
